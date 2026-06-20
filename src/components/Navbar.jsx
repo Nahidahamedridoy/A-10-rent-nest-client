@@ -2,14 +2,17 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FaTicketAlt, FaUser, FaSignOutAlt, FaThLarge } from "react-icons/fa";
 import Image from "next/image";
 import { IoIosHome } from "react-icons/io";
+import { authClient, useSession } from "@/lib/auth-client";
 
 export default function Navbar() {
     const pathname = usePathname();
-    const [isLoggedIn, setIsLoggedIn] = useState(true);
+    const router = useRouter();
+    const { data: session } = useSession();
+
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
 
@@ -23,18 +26,19 @@ export default function Navbar() {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-    const handleLogout = () => {
-        setIsLoggedIn(false);
-        setDropdownOpen(false);
-        alert("Logged Out! (Design Only)");
+    const handleLogout = async () => {
+        await authClient.signOut()
+        router.push("/");
     };
 
-    const mockUser = {
-        name: "jone doe",
-        email: "abc@gmail.com",
-        role: "Tenant",
-        image: "https://www.mamp.one/wp-content/uploads/2024/09/image-resources2.jpg"
-    };
+    // console.log(session);
+
+    // const mockUser = {
+    //     name: "jone doe",
+    //     email: "abc@gmail.com",
+    //     role: "Tenant",
+    //     image: "https://www.mamp.one/wp-content/uploads/2024/09/image-resources2.jpg"
+    // };
 
     // console.log(mockUser);
 
@@ -58,7 +62,7 @@ export default function Navbar() {
                     >
                         Browse Events
                     </Link>
-                    {isLoggedIn && (
+                    {session && session?.user && (
                         <Link
                             href={"/"}
                             className={`text-sm font-medium transition-colors ${pathname.startsWith("/dashboard") ? "text-pink-500 font-semibold" : "text-slate-300 hover:text-white"}`}
@@ -71,10 +75,10 @@ export default function Navbar() {
                 {/* RIGHT ACTIONS */}
                 <div className="flex items-center gap-4">
                     {/* ইউজার লগইন না থাকলে লগইন ও সাইনআপ বাটন দেখাবে */}
-                    {!isLoggedIn && (
+                    {!session && (
                         <div className="flex items-center gap-3">
                             <Link href="/login">
-                                <button onClick={() => setIsLoggedIn(true)}
+                                <button
                                     className="inline-flex items-center justify-center font-semibold text-xs text-slate-300 hover:text-white h-9 px-4 rounded-xl hover:bg-white/5 transition"
                                 >
                                     Login
@@ -90,15 +94,17 @@ export default function Navbar() {
                     )}
 
                     {/* ইউজার লগইন থাকলে ইমেজ/অ্যাভাটার ড্রপডাউন দেখাবে */}
-                    {isLoggedIn && (
+                    {session && session?.user && (
                         <div className="relative" ref={dropdownRef}>
                             <button
                                 onClick={() => setDropdownOpen(!dropdownOpen)}
                                 className="flex items-center transition-transform hover:scale-105 outline-none focus:outline-none cursor-pointer"
                             >
-                                <img
+                                <Image
+                                    width={40}
+                                    height={40}
                                     className="w-9 h-9 rounded-full object-cover border border-pink-500 shadow-md shadow-pink-500/10"
-                                    src={mockUser.image}
+                                    src={session?.user?.image}
                                     alt="avatar"
                                 />
                             </button>
@@ -108,10 +114,10 @@ export default function Navbar() {
                                     {/* User info */}
                                     <div className="px-4 py-2.5 border-b border-white/5 mb-1.5 cursor-default">
                                         <p className="text-[10px] text-pink-400 font-bold uppercase tracking-wider">
-                                            {mockUser.role} Account
+                                            {session.user.role} Account
                                         </p>
-                                        <p className="font-bold text-white text-sm mt-0.5">{mockUser.name}</p>
-                                        <p className="text-[11px] text-slate-400 truncate mt-0.5">{mockUser.email}</p>
+                                        <p className="font-bold text-white text-sm mt-0.5">{session.user.name}</p>
+                                        <p className="text-[11px] text-slate-400 truncate mt-0.5">{session.user.email}</p>
                                     </div>
 
                                     {/* Actions */}
@@ -125,7 +131,7 @@ export default function Navbar() {
                                     </Link>
 
                                     <Link
-                                        href={`/dashboard/${mockUser.role}`}
+                                        href={`/dashboard/${session.user.role}`}
                                         onClick={() => setDropdownOpen(false)}
                                         className="w-full flex items-center gap-2.5 px-4 py-2.5 text-left text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition cursor-pointer"
                                     >

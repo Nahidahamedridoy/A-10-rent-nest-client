@@ -19,7 +19,7 @@ export default function RegisterPage() {
             // upload image to imgbb
             const imageFile = data.image[0];
             const imageUrl = await uploadImage(imageFile);
-            console.log(imageUrl);
+            // console.log(imageUrl);
             
             const { data: signUpData, error: signUpError } = await authClient.signUp.email({
                 email: data.email,
@@ -34,10 +34,11 @@ export default function RegisterPage() {
             if (signUpError) {
                 toast.error("Registration not successful...");
             } else {
+                toast.success("Register Successfully");
                router.push('/')
             }
         } catch (err) {
-            console.log(err);
+            
             toast.error("Something went wrong.");
         }
     };
@@ -119,7 +120,7 @@ export default function RegisterPage() {
                             <Input
                                 {...register("password", { 
                                     required: "Password is Required", 
-                                    maxLength: { value: 12, message: "Max 12 characters" }, 
+                                    maxLength: { value: 18, message: "Max 18 characters" }, 
                                     minLength: { value: 6, message: "Min 6 characters" } 
                                 })}
                                 id="password"
