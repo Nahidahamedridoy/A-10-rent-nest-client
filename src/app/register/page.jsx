@@ -11,6 +11,7 @@ import { uploadImage } from "@/utils/uploadImage";
 import { redirect, useRouter } from "next/navigation";
 
 export default function RegisterPage() {
+    
     const { register, handleSubmit, formState: { errors } } = useForm();
     const router = useRouter();
 

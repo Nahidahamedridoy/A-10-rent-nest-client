@@ -33,8 +33,10 @@ const DashboardSidebar = () => {
     // ওনারের মেইন ৪টি ফিচার মেনু
     const ownerMenu = [
         { key: "overview", label: "Dashboard Home", icon: FaChartPie, href: "/dashboard/owner" },
-        { key: "add-property", label: "Add Property", icon: FaPlus, href: "/dashboard/owner/add-property" },
+        //all
         { key: "my-properties", label: "My Properties", icon: FaList, href: "/dashboard/owner/my-properties" },
+        // add event
+        { key: "add-property", label: "Add Property", icon: FaPlus, href: "/dashboard/owner/add-property" },
         { key: "booking-requests", label: "Booking Requests", icon: FaClipboardList, href: "/dashboard/owner/booking-requests" },
     ];
     // tenant
