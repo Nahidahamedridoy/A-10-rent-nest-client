@@ -12,7 +12,7 @@ export const serverMutation = async (path , method , data) => {
         },
         body: JSON.stringify(data),
     });
-    return res.json();
+    return await res.json();
 };
 
 export const serverFetch = async (path) => {
