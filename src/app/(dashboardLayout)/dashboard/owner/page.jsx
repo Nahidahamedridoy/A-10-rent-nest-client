@@ -40,6 +40,7 @@ const OwnerDashboardHome = () => {
         { month: 'Apr 26', earnings: 1100 },
         { month: 'May 26', earnings: 1300 },
         { month: 'Jun 26', earnings: 1450 },
+        
     ];
 
     const handleDownloadReport = () => {

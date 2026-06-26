@@ -15,7 +15,17 @@ export const serverMutation = async (path , method , data) => {
     return await res.json();
 };
 
+export const  deleteMutation = async (path) =>{
+    const res = await fetch(`${baseURL}${path}`, {
+        method: "DELETE",
+        
+    });
+    return await res.json();
+}
+
 export const serverFetch = async (path) => {
-    const res = await fetch(`${baseURL}${path}`)
+    const res = await fetch(`${baseURL}${path}`,{
+        cache: "no-store"
+    })
     return res.json();
 };

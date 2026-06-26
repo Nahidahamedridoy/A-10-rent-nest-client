@@ -1,6 +1,6 @@
 "use server";
 
-import { serverMutation } from "../server";
+import { deleteMutation, serverMutation } from "../server";
 
 export const addProperty = async (data) => {
     const resData = await serverMutation("/api/property", "POST", data);
@@ -14,6 +14,6 @@ export const updateProperty = async (data, id) => {
 };
 
 export const deleteProperty = async (id) => {
-    const resData = await serverMutation(`/api/property/${id}`, "DELETE");
+    const resData = await deleteMutation(`/api/property/${id}`, "DELETE");
     return resData;
 };

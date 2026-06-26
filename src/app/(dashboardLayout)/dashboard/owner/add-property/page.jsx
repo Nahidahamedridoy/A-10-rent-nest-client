@@ -122,7 +122,7 @@ const AddPropertyPage = () => {
                                 <div className="w-full">
                                     <Label htmlFor="propertyImage" className="text-white/80 text-sm mb-1 block">Property Image</Label>
                                     <Input
-                                        type="url"
+                                        type="file"
                                         accept="image/*"
                                         id="propertyImage"
                                         startContent={<FaImage className="text-slate-400 text-sm mr-1" />}

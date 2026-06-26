@@ -8,11 +8,14 @@ import { useForm } from "react-hook-form";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function LoginPage() {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const router = useRouter();
+    const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
+    // Email/Password Sign In
     const onSubmit = async (data) => {
         try {
             const { data: signInData, error: signInError } = await authClient.signIn.email({
@@ -20,16 +23,28 @@ export default function LoginPage() {
                 password: data.password,
             });
 
-            // console.log(signInData, signInError);
-
             if (signInError) {
                 toast.error("Login failed. Please check your credentials.");
             } else {
                 toast.success("Welcome back! Login successful.");
-                router.push("/")
+                router.push("/");
             }
         } catch (err) {
             toast.error("Something went wrong.");
+        }
+    };
+
+    // Google OAuth Sign In
+    const handleGoogleSignIn = async () => {
+        try {
+            setIsGoogleLoading(true);
+            await authClient.signIn.social({
+                provider: "google",
+                callbackURL: "/", // লগইন সফল হওয়ার পর যে পেজে রিডাইরেক্ট করবে
+            });
+        } catch (err) {
+            toast.error("Google login failed. Please try again.");
+            setIsGoogleLoading(false);
         }
     };
 
@@ -108,11 +123,13 @@ export default function LoginPage() {
                     </div>
 
                     {/* Google OAuth Button */}
-                    <Button
+                    <Button 
                         variant="bordered"
                         className="w-full border-slate-200 hover:bg-slate-50 hover:border-slate-300 text-slate-700 font-semibold h-11 transition-all"
                         radius="xl"
                         startContent={<FaGoogle className="text-pink-500" />}
+                        onClick={handleGoogleSignIn}
+                        isLoading={isGoogleLoading}
                     >
                         Google OAuth
                     </Button>

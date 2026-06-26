@@ -39,11 +39,10 @@ const EditPropertyModal = ({ isModalOpen, setIsModalOpen, editingProperty }) => 
             setIsSubmitting(true);
             const updateData = {
                 ...data,
-                rent: Number(data.rent),
+                rentPrice: Number(data.rentPrice),
                 bedrooms: Number(data.bedrooms),
                 bathrooms: Number(data.bathrooms),
                 propertySize: Number(data.propertySize),
-
             };
             console.log(updateData);
 
@@ -170,7 +169,7 @@ const EditPropertyModal = ({ isModalOpen, setIsModalOpen, editingProperty }) => 
                                     </div>
 
                                     <div className="w-full">
-                                        <Label htmlFor="rentPrice" className="text-slate-300 text-sm mb-1 block">Rent Price</Label>
+                                        <Label htmlFor="rent" className="text-slate-300 text-sm mb-1 block">Rent Price</Label>
                                         <Input
                                             id="rentPrice"
                                             type="number"
