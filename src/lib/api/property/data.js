@@ -8,10 +8,10 @@ export const myBookings = async (email) => {
     return result;
 }
 // for all showing
-export const fetchEvents = async () => {
+export const fetchEvents = async (query) => {
     // console.log("email",email);
 
-    const result = await serverFetch(`/api/property`);
+    const result = await serverFetch(`/api/property?${query}`);
     // console.log(result, "MY PRP");
     return result;
 }

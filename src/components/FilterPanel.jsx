@@ -1,55 +1,52 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Card, Input, Button, Label } from "@heroui/react";
 import { FaSearch, FaSlidersH, FaHistory } from "react-icons/fa";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
-// রিকোয়ারমেন্ট অনুযায়ী ডাইনামিক ফিল্টার ডেটা সেট
-const PROPERTY_TYPES = ["Apartment", "House", "Duplex", "Studio", "Office", "Commercial"];
+
+const PROPERTY_TYPES = ["Apartment", "House", "Duplex",  "Office", "Commercial"];
 
 export default function FilterPanel() {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
-  // URL-এর বর্তমান অবস্থা ধরে রাখার জন্য স্টেট (যাতে পেজ রিলোড হলেও ইনপুট মুছে না যায়)
-  const [location, setLocation] = useState(searchParams.get("location") || "");
-  const [propertyType, setPropertyType] = useState(searchParams.get("propertyType") || "");
-  const [sort, setSort] = useState(searchParams.get("sort") || "");
+  const [location, setLocation] = useState("");
+  const [propertyType, setPropertyType] = useState("");
+  const [sort, setSort] = useState("");
 
-  // URL চেঞ্জ হলে স্টেট সিঙ্ক করার জন্য
-  useEffect(() => {
-    setLocation(searchParams.get("location") || "");
-    setPropertyType(searchParams.get("propertyType") || "");
-    setSort(searchParams.get("sort") || "");
-  }, [searchParams]);
+  // console.log(location , propertyType , sort);
 
-  // ফিল্টার অ্যাপ্লাই করার লজিক (ব্যাকএন্ড ফিল্টারিংয়ের জন্য ইউআরএল পুশ করবে)
+
   const handleApplyFilters = () => {
     const params = new URLSearchParams();
-    if (location) params.set("location", location);
-    if (propertyType) params.set("propertyType", propertyType);
-    if (sort) params.set("sort", sort);
-    params.set("page", "1"); // ফিল্টার চেঞ্জ করলে সবসময় প্রথম পেজ থেকে শুরু হবে
 
-    router.push(`/properties?${params.toString()}`);
+    if (location) {
+      params.set("location", location);
+    }
+    if (propertyType) {
+      params.set("propertyType", propertyType);
+    }
+    if (sort) {
+      params.set("sort", sort);
+    }
+    router.push(`/property?${params.toString()}`);
   };
 
-  // ফিল্টার রিসেট লজিক
   const handleReset = () => {
     setLocation("");
     setPropertyType("");
     setSort("");
-    router.push("/properties");
+    router.push("/property");
   };
 
   return (
-    <Card 
+    <Card
       className="bg-white border border-slate-100 p-6 md:p-8 shadow-md rounded-2xl relative overflow-hidden"
       shadow="none"
     >
       <div className="gap-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 items-end">
-        
+
         {/* Location Search Input */}
         <div className="flex flex-col gap-2">
           <Label htmlFor="search-location" className="text-xs font-bold uppercase tracking-wider text-slate-500">
@@ -124,7 +121,7 @@ export default function FilterPanel() {
         <div className="flex gap-3 w-full">
           <Button
             onClick={handleApplyFilters}
-            className="flex-grow bg-gradient-to-r from-pink-500 to-indigo-600 text-white font-bold h-12 shadow-sm hover:shadow-md hover:scale-[1.01] active:scale-95 transition-all duration-200"
+            className="flex-grow bg-gradient-to-r from-blue-500 to-white-600 text-white font-bold h-12 shadow-sm hover:shadow-md hover:scale-[1.01] active:scale-95 transition-all duration-200"
             radius="lg"
             startContent={<FaSlidersH size={12} />}
           >

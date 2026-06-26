@@ -7,22 +7,30 @@ import { fetchEvents } from "@/lib/api/property/data";
 export default async function BrowsePropertiesPage({ searchParams }) {
     // ১. সার্চ প্যারামিটারগুলো রিসিভ করা (অ্যাসিঙ্ক হ্যান্ডলিং)
     const sParams = await searchParams;
+    // console.log(sParams);
     const location = sParams.location || "";
     const propertyType = sParams.propertyType || "";
     const sort = sParams.sort || "";
 
+    // console.log(location , propertyType , sort);
+
     // ২. URLSearchParams অবজেক্ট তৈরি করে ব্যাকএন্ড API-তে পাঠানো
     const params = new URLSearchParams();
-    if (location) params.set("location", location);
-    if (propertyType) params.set("propertyType", propertyType);
-    if (sort) params.set("sort", sort);
+    if (location) {
+        params.set("location", location);
+    }
+    if (propertyType) {
+        params.set("propertyType", propertyType);
+    }
+    if (sort) {
+        params.set("sort", sort);
+    }
 
-    // ব্যাকএন্ড থেকে প্রপার্টি লিস্ট নিয়ে আসা
     const properties = await fetchEvents(params);
 
     return (
         <div className="min-h-screen bg-slate-50/50 py-16 px-6 max-w-7xl mx-auto w-full space-y-12">
-            
+
             {/* HEADER - লাক্সারি লাইট থিম টেক্সট */}
             <div className="text-center md:text-left space-y-2">
                 <h1 className="text-4xl font-extrabold tracking-tight text-slate-900">
@@ -39,7 +47,7 @@ export default async function BrowsePropertiesPage({ searchParams }) {
             </Suspense>
 
             {/* Properties Grid Component wrapped in Suspense with Soft Light Loader */}
-            <Suspense 
+            <Suspense
                 key={`list-${params.toString()}`}
                 fallback={
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
