@@ -17,6 +17,7 @@ export default function LoginPage() {
 
     // Email/Password Sign In
     const onSubmit = async (data) => {
+        console.log(data);
         try {
             const { data: signInData, error: signInError } = await authClient.signIn.email({
                 email: data.email,
@@ -40,13 +41,14 @@ export default function LoginPage() {
             setIsGoogleLoading(true);
             await authClient.signIn.social({
                 provider: "google",
-                callbackURL: "/", // লগইন সফল হওয়ার পর যে পেজে রিডাইরেক্ট করবে
+                callbackURL: "/", 
             });
         } catch (err) {
             toast.error("Google login failed. Please try again.");
             setIsGoogleLoading(false);
         }
     };
+
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-pink-50/30 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">

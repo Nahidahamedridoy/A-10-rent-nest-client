@@ -44,6 +44,17 @@ export default function RegisterPage() {
         }
     };
 
+    const handleGoogleSignIn = async () => {
+        try {
+            await authClient.signIn.social({
+                provider: "google",
+                callbackURL: "/", // সফল হলে হোমপেজে রিডাইরেক্ট হবে
+            });
+        } catch (err) {
+            toast.error("Google authentication failed.");
+        }
+    };
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-pink-50/30 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
             <Card className="w-full max-w-lg border border-slate-100 bg-white/80 backdrop-blur-md shadow-xl rounded-2xl p-6 mx-auto">
@@ -170,6 +181,7 @@ export default function RegisterPage() {
 
                     {/* Google OAuth Button */}
                     <Button
+                    onClick={handleGoogleSignIn}
                         variant="bordered"
                         className="w-full border-slate-200 hover:bg-slate-50 hover:border-slate-300 text-slate-700 font-semibold h-11 transition-all"
                         radius="xl"

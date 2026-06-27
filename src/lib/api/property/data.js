@@ -11,7 +11,7 @@ export const myBookings = async (email) => {
 export const fetchEvents = async (query) => {
     // console.log("email",email);
 
-    const result = await serverFetch(`/api/property?${query}`);
+    const result = await serverFetch(`/api/property?${query.toString()}`);
     // console.log(result, "MY PRP");
     return result;
 }
