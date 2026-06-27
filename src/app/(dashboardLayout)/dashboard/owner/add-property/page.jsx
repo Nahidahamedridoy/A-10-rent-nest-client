@@ -62,7 +62,7 @@ const AddPropertyPage = () => {
             };
 
             const result = await addProperty(finalPropertyData);
-            console.log(result , "result");
+            console.log(result, "result");
 
             if (result?.insertedId) {
                 toast.success("Property submitted for admin approval!");

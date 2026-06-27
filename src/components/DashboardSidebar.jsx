@@ -42,7 +42,6 @@ const DashboardSidebar = () => {
     // tenant
     const tenantMenu = [
         { key: "overview", label: "Overview", icon: FaChartPie, href: "/dashboard/tenant" },
-        // atar maddhome payment hobe ---> ticket
         { key: "my-bookings", label: "My Bookings", icon: FaClipboardList, href: "/dashboard/tenant/my-bookings" },
         { key: "favorites", label: "Favorites", icon: FaHeart, href: "/dashboard/tenant/favorites" }
     ];
