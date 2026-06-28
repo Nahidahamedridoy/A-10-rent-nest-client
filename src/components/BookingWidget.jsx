@@ -5,17 +5,17 @@ import { Card, Button, Input } from "@heroui/react";
 import { FaCheck } from "react-icons/fa";
 import { useSession } from "@/lib/auth-client";
 
-export default function BookingWidget({ rentPrice, rentType, propertyId, propertyTitle }) {
-  
+export default function BookingWidget({ rentPrice, rentType, propertyId, propertyTitle , }) {
+
   const [duration, setDuration] = useState(1);
   const { data: session } = useSession();
   const user = session?.user;
 
-  
+
   const isAvailable = rentPrice > 0;
   const pricePerUnit = Number(rentPrice) || 0;
 
- 
+
   const currentDuration = duration > 0 ? duration : 1;
   const totalAmount = (pricePerUnit * currentDuration).toFixed(2);
 
@@ -31,6 +31,7 @@ export default function BookingWidget({ rentPrice, rentType, propertyId, propert
       rentType: rentType || "Monthly",
       propertyId,
       propertyTitle,
+      tenantEmail: user?.email,
       duration: currentDuration, // কত মাসের জন্য ভাড়া নিতে চাচ্ছে
     };
 
@@ -43,7 +44,7 @@ export default function BookingWidget({ rentPrice, rentType, propertyId, propert
         body: JSON.stringify(paymentData)
       });
       const data = await res.json();
-      
+
       if (data?.url) {
         window.location.href = data.url;
       }
@@ -67,7 +68,7 @@ export default function BookingWidget({ rentPrice, rentType, propertyId, propert
                 <span className="text-xs text-slate-400 font-normal"> / {rentType || "month"}</span>
               </span>
             </div>
-            
+
             <div className="flex justify-between items-center text-sm">
               <span className="text-slate-400">Availability Status:</span>
               <span className=" font-bold">
@@ -116,7 +117,7 @@ export default function BookingWidget({ rentPrice, rentType, propertyId, propert
             className={`w-full font-bold h-12 shadow-lg ${!isAvailable
               ? "bg-slate-800 text-slate-500 shadow-none cursor-not-allowed"
               : "bg-gradient-to-r from-pink-500 to-indigo-600  shadow-pink-500/10 hover:shadow-pink-500/20"
-            }`}
+              }`}
             radius="lg"
           >
             {!isAvailable ? "Unavailable" : "Rent This Property Now"}

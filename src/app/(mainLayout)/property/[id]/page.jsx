@@ -3,6 +3,8 @@ import { Button } from "@heroui/react";
 import { FaArrowLeft, FaMapMarkerAlt, FaBed, FaBath, FaRulerCombined, FaCheckCircle, FaUser } from "react-icons/fa";
 import { baseURL } from "@/lib/api/baseUrl";
 import BookingWidget from "@/components/BookingWidget";
+import AddToFavoriteButton from "@/components/AddToFavoriteButton";
+import { getUser } from "@/lib/api/session";
 
 // ডাটা ফেচ করার ফাংশন
 const fetchProperty = async (id) => {
@@ -12,34 +14,34 @@ const fetchProperty = async (id) => {
 }
 
 export default async function PropertyDetailsPage({ params }) {
+     const user = await getUser();
     const { id } = await params;
     const property = await fetchProperty(id);
 
-    // 💡 আপনার ব্যাকঅ্যান্ডের ডাটা স্কিমা অনুযায়ী নিখুঁত ডেসট্রাকচারিং
     const {
         _id,
         title,
         description,
         location,
         propertyType,
-        price,         
+        price,
         rentPrice,     // ডাটাবেজের 'rentPrice' (যেমন: 23)
-        rentType,    
+        rentType,
         bedrooms,
         bathrooms,
-        size,          
+        size,
         propertySize,  // ডাটাবেজের 'propertySize' (যেমন: 7)
-        amenities,     
-        extraFeatures, 
-        status,        
-        ownerInfo,     
+        amenities,
+        extraFeatures,
+        status,
+        ownerInfo,
         image,         // 🔥 মূল ফিক্স: ডাটাবেজে ফিল্ডের নাম 'image', 'images' নয়
-        images         
+        images
     } = property || {};
 
     // 📸 ইমেজ ফিল্টারিং: ডাটাবেজের একক 'image' ফিল্ড এবং 'images' ফলব্যাক দুটাই হ্যান্ডেল করবে
     let displayBanner = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6"; // ডিফল্ট ব্যানার
-    
+
     if (image && typeof image === 'string' && image.trim() !== '') {
         displayBanner = image;
     } else if (images) {
@@ -56,7 +58,7 @@ export default async function PropertyDetailsPage({ params }) {
 
     return (
         <div className="min-h-screen bg-slate-50/50 py-12 px-6 max-w-6xl mx-auto w-full space-y-10">
-            
+
             {/* Back Button */}
             <Link href="/property">
                 <Button
@@ -87,10 +89,10 @@ export default async function PropertyDetailsPage({ params }) {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
-                
+
                 {/* Left Column: Details & Description */}
                 <div className="lg:col-span-2 space-y-8">
-                    
+
                     {/* Title & Location Header */}
                     <div className="space-y-4">
                         <div className="flex flex-wrap items-center justify-between gap-2">
@@ -98,11 +100,10 @@ export default async function PropertyDetailsPage({ params }) {
                                 {title || "Property Title"}
                             </h1>
                             {status && (
-                                <span className={`text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-md border ${
-                                    status === "active" || status === "Approved" 
-                                    ? "bg-emerald-50 text-emerald-600 border-emerald-200" 
+                                <span className={`text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-md border ${status === "active" || status === "Approved"
+                                    ? "bg-emerald-50 text-emerald-600 border-emerald-200"
                                     : "bg-amber-50 text-amber-600 border-amber-200"
-                                }`}>
+                                    }`}>
                                     {status}
                                 </span>
                             )}
@@ -189,12 +190,24 @@ export default async function PropertyDetailsPage({ params }) {
 
                 {/* Right Column: Booking Widget */}
                 <div className="lg:sticky lg:top-6 space-y-6">
-                    <BookingWidget 
-                        rentPrice={finalPrice} 
-                        rentType={rentType || "Monthly"} 
-                        propertyId={_id} 
-                        propertyTitle={title} 
+                    <BookingWidget
+                        rentPrice={finalPrice}
+                        rentType={rentType || "Monthly"}
+                        propertyId={_id}
+                        propertyTitle={title}
                     />
+
+                    {/* add to favorites */}
+                    <AddToFavoriteButton
+                        user={user}
+                        propertyId={_id}
+                        title={title}
+                        location={location}
+                        price={finalPrice}
+                        image={displayBanner}
+                        ownerEmail={ownerInfo?.email}
+                    />
+
                 </div>
 
             </div>

@@ -1,11 +1,12 @@
-import React from 'react';
+import FavoritesTable from "@/components/FavoritesTable";
+import { getUser } from "@/lib/api/session";
 
-const Favorites = () => {
-    return (
-        <div>
-            favorites
-        </div>
-    );
-};
+export default async function FavoritesPage() {
+    const user = await getUser();
 
-export default Favorites;
+    return (<div>
+
+        <FavoritesTable user={user} />
+    </div>
+);
+}

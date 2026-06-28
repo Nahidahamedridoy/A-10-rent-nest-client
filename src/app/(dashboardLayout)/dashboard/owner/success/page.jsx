@@ -19,12 +19,14 @@ export default async function PaymentSuccess({ searchParams }) {
     propertyId: session?.metadata?.propertyId,
     propertyTitle: session?.metadata?.propertyTitle,
     duration: session?.metadata?.duration,
-    tenantEmail: session?.metadata?.email || session?.customer_email,
+    tenantEmail: session?.metadata?.tenantEmail || session?.customer_email,
     rentType: session?.metadata?.rentType,
     paymentType: "booking",
     transactionId: session?.payment_intent?.id,
     paymentStatus: session?.payment_status
   };
+
+  // console.log(paymentData , "paymentData");
 
   const res = await fetch(`${baseURL}/api/property/booking`, {
     method: "POST",
@@ -96,7 +98,7 @@ export default async function PaymentSuccess({ searchParams }) {
         <Card.Footer className="flex gap-3 pt-5">
 
           <Button
-            href="/dashboard"
+            href="/dashboard/owner/tenant/my-bookings"
             className="flex-1 bg-gradient-to-r from-blue-600 to-violet-600 text-white font-semibold h-11 rounded-xl"
           >
             My Bookings

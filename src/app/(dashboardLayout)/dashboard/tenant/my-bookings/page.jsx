@@ -1,10 +1,12 @@
 import DashboardHeading from '@/components/DashboardHeading';
+import MyBookingsTable from '@/components/MyBookingsTable';
 import { fetchMyBooking } from '@/lib/api/bookings/data';
 import { getUser } from '@/lib/api/session';
 import React from 'react'
 
 const TenantMyBookings = async() => {
-    const user = getUser();
+    const user = await getUser();
+    console.log(user);
     const bookings = await fetchMyBooking(user?.email);
     console.log(bookings);
     return (
@@ -13,7 +15,7 @@ const TenantMyBookings = async() => {
                 title="My Booked Rooms"
                 description="All the booked rooms"
             />
-            MyBookings
+            <MyBookingsTable bookings={bookings}/>
         </div>
     );
 };

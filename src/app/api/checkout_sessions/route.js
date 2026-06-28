@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
-import { stripe } from '../../../lib/stripe'; 
+import { stripe } from '../../../lib/stripe';
 import { getUser } from '@/lib/api/session';
 
 export async function POST(req) {
@@ -9,11 +9,15 @@ export async function POST(req) {
     const origin = headersList.get('origin');
     const body = await req.json();
 
-    // console.log(body);
+    const { type, rentPrice, rentType, propertyId, propertyTitle, duration,
+      tenantEmail } = body;
 
-    const { type, rentPrice, rentType, propertyId, propertyTitle, duration } = body;
+      // console.log("body" , body);
 
     const user = await getUser();
+
+    const finalEmail = user?.email ||tenantEmail || '';
+    const finalUserId = user?.id || '';
 
     const pricePerUnit = Number(rentPrice) || 0;
     const currentDuration = Number(duration) || 1;
@@ -29,11 +33,10 @@ export async function POST(req) {
       },
       quantity: currentDuration,
     };
-    console.log(lineObj);
 
     let metaObj = {
-      email: user?.email || '',
-      userId: user?.id || '',
+      tenantEmail: finalEmail,
+      userId: finalUserId,
       propertyId: propertyId || '',
       paymentType: type || 'property_rent',
       propertyTitle: propertyTitle || '',
@@ -42,8 +45,10 @@ export async function POST(req) {
       amount: (pricePerUnit * currentDuration).toFixed(2),
     };
 
+    // console.log("metaObj" , metaObj);
+
     const session = await stripe.checkout.sessions.create({
-      customer_email: user?.email || undefined,
+      customer_email: finalEmail || undefined,
       line_items: [lineObj],
       metadata: metaObj,
       mode: 'payment',
