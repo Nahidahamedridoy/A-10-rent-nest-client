@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Card, Button, Input } from "@heroui/react";
 import { FaCheck } from "react-icons/fa";
-import { useSession } from "@/lib/auth-client";
+import { authClient, useSession } from "@/lib/auth-client";
 
 export default function BookingWidget({ rentPrice, rentType, propertyId, propertyTitle , }) {
 
@@ -32,14 +32,18 @@ export default function BookingWidget({ rentPrice, rentType, propertyId, propert
       propertyId,
       propertyTitle,
       tenantEmail: user?.email,
-      duration: currentDuration, // কত মাসের জন্য ভাড়া নিতে চাচ্ছে
+      duration: currentDuration, 
     };
+
+    const {data: tokenData} = await authClient.token()
+    // console.log(tokenData , "tokendata");
 
     try {
       const res = await fetch("/api/checkout_sessions", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          authorization: `Bearer ${tokenData?.token}`
         },
         body: JSON.stringify(paymentData)
       });

@@ -1,8 +1,11 @@
 "use server";
 
+import { authClient } from "@/lib/auth-client";
 import { deleteMutation, serverMutation } from "../server";
 
 export const addProperty = async (data) => {
+
+
     const resData = await serverMutation("/api/property", "POST", data);
     return resData;
 };

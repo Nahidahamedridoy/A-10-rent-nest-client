@@ -1,31 +1,45 @@
+import { headers } from "next/headers";
+import { auth } from "../auth";
+import { authClient } from "../auth-client";
 import { baseURL } from "./baseUrl"
 
 //update delete add
-export const serverMutation = async (path , method , data) => {
+export const serverMutation = async (path, method, data) => {
 
-    console.log(path,baseURL,data);
+    const { token } = await auth.api.getToken({
+        headers: await headers()
+    })
 
     const res = await fetch(`${baseURL}${path}`, {
         method: method,
         headers: {
-            "Content-Type" : "application/json"
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`
         },
         body: JSON.stringify(data),
     });
     return await res.json();
 };
 
-export const  deleteMutation = async (path) =>{
+export const deleteMutation = async (path) => {
     const res = await fetch(`${baseURL}${path}`, {
         method: "DELETE",
-        
+
     });
     return await res.json();
 }
 
 export const serverFetch = async (path) => {
-    const res = await fetch(`${baseURL}${path}`,{
-        cache: "no-store"
+
+    const { token } = await auth.api.getToken({
+        headers: await headers()
+    })
+
+    const res = await fetch(`${baseURL}${path}`, {
+        cache: "no-store",
+        headers: {
+            authorization: `Bearer ${token}`
+        }
     })
     return res.json();
 };

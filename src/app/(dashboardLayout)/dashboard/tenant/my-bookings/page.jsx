@@ -6,9 +6,9 @@ import React from 'react'
 
 const TenantMyBookings = async() => {
     const user = await getUser();
-    console.log(user);
+    // console.log(user);
     const bookings = await fetchMyBooking(user?.email);
-    console.log(bookings);
+    // console.log(bookings ,"booking");
     return (
         <div>
             <DashboardHeading

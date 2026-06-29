@@ -33,14 +33,11 @@ const AddPropertyPage = () => {
 
     const onSubmit = async (data) => {
         try {
-            // ইমেজ আপলোড হ্যান্ডলিং
             const imageFile = data.propertyImage[0];
             const imageUrl = await uploadImage(imageFile);
 
-            // ফর্মের ফাইল অবজেক্ট ডিলিট করে টেক্সট URL বসানো
             delete data.propertyImage;
 
-            // প্রজেক্ট রিকোয়ারমেন্ট অনুযায়ী অবজেক্ট তৈরি
             const finalPropertyData = {
                 title: data.title,
                 description: data.description,
@@ -54,7 +51,7 @@ const AddPropertyPage = () => {
                 amenities: data.amenities,
                 extraFeatures: data.extraFeatures,
                 image: imageUrl,
-                status: "Pending", // ডিফল্ট স্ট্যাটাস অবশ্যই Pending হতে হবে
+                status: "Pending", 
                 ownerInfo: {
                     name: session?.user?.name || "Unknown Owner",
                     email: session?.user?.email,
@@ -62,7 +59,7 @@ const AddPropertyPage = () => {
             };
 
             const result = await addProperty(finalPropertyData);
-            console.log(result, "result");
+            // console.log(result, "result");
 
             if (result?.insertedId) {
                 toast.success("Property submitted for admin approval!");

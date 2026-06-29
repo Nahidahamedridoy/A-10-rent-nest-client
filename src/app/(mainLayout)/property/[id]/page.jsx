@@ -5,10 +5,20 @@ import { baseURL } from "@/lib/api/baseUrl";
 import BookingWidget from "@/components/BookingWidget";
 import AddToFavoriteButton from "@/components/AddToFavoriteButton";
 import { getUser } from "@/lib/api/session";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
-// ডাটা ফেচ করার ফাংশন
+
 const fetchProperty = async (id) => {
-    const res = await fetch(`${baseURL}/api/single-property/${id}`);
+
+    const {token} = await auth.api.getToken({
+        headers: await headers()
+    })
+    const res = await fetch(`${baseURL}/api/single-property/${id}` ,{
+        headers:{
+            authorization: `Bearer ${token}`
+        }
+    });
     const data = await res.json();
     return data;
 }
@@ -25,22 +35,21 @@ export default async function PropertyDetailsPage({ params }) {
         location,
         propertyType,
         price,
-        rentPrice,     // ডাটাবেজের 'rentPrice' (যেমন: 23)
+        rentPrice,     
         rentType,
         bedrooms,
         bathrooms,
         size,
-        propertySize,  // ডাটাবেজের 'propertySize' (যেমন: 7)
+        propertySize,
         amenities,
         extraFeatures,
         status,
         ownerInfo,
-        image,         // 🔥 মূল ফিক্স: ডাটাবেজে ফিল্ডের নাম 'image', 'images' নয়
+        image,         
         images
     } = property || {};
 
-    // 📸 ইমেজ ফিল্টারিং: ডাটাবেজের একক 'image' ফিল্ড এবং 'images' ফলব্যাক দুটাই হ্যান্ডেল করবে
-    let displayBanner = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6"; // ডিফল্ট ব্যানার
+    let displayBanner = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6";
 
     if (image && typeof image === 'string' && image.trim() !== '') {
         displayBanner = image;
