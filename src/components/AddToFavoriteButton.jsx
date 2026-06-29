@@ -49,9 +49,9 @@ export default function AddToFavoriteButton({
         <Button
             color="danger"
             variant="ghost"
-            startContent={<FaHeart />}
+            startContent={<FaHeart className="transition-transform group-hover:scale-125" />}
             onClick={handleFavorite}
-            className="w-full mt-10"
+            className="group w-full mt-10 border-2 font-medium tracking-wide rounded-xl hover:bg-red-500 hover:text-white transition-all duration-300 ease-in-out"
         >
             Add to Favorites
         </Button>

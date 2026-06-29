@@ -1,14 +1,10 @@
-import { headers } from "next/headers";
-import { auth } from "../auth";
-import { authClient } from "../auth-client";
 import { baseURL } from "./baseUrl"
+import { getTokenServer } from "../getTokenServer";
 
 //update delete add
 export const serverMutation = async (path, method, data) => {
 
-    const { token } = await auth.api.getToken({
-        headers: await headers()
-    })
+    const token = await getTokenServer();
 
     const res = await fetch(`${baseURL}${path}`, {
         method: method,
@@ -31,9 +27,7 @@ export const deleteMutation = async (path) => {
 
 export const serverFetch = async (path) => {
 
-    const { token } = await auth.api.getToken({
-        headers: await headers()
-    })
+    const token = await getTokenServer()
 
     const res = await fetch(`${baseURL}${path}`, {
         cache: "no-store",
