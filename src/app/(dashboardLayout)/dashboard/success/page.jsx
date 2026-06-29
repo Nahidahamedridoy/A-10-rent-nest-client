@@ -97,12 +97,14 @@ export default async function PaymentSuccess({ searchParams }) {
 
         <Card.Footer className="flex gap-3 pt-5">
 
+          <Link
+          href="/dashboard/tenant/my-bookings">
           <Button
-            href="/dashboard/owner/tenant/my-bookings"
             className="flex-1 bg-gradient-to-r from-blue-600 to-violet-600 text-white font-semibold h-11 rounded-xl"
-          >
+            >
             My Bookings
           </Button>
+              </Link>
 
           <Button
             href="/property"

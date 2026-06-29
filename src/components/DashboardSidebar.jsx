@@ -15,7 +15,7 @@ import {
     FaUsers,
     FaBuilding,
     FaCalendarAlt,
-    FaHistory
+    FaMoneyBillWave
 } from 'react-icons/fa';
 import { IoHome } from 'react-icons/io5';
 
@@ -52,7 +52,7 @@ const DashboardSidebar = () => {
         { key: "all-users", label: "Users", icon: FaUsers, href: "/dashboard/admin/all-users" },
         { key: "all-properties", label: "Properties", icon: FaBuilding, href: "/dashboard/admin/all-properties" },
         { key: "all-bookings", label: "Bookings", icon: FaCalendarAlt, href: "/dashboard/admin/all-bookings" },
-        { key: "transactions", label: "Transactions", icon: FaHistory, href: "/dashboard/admin/transactions" },
+        { key: "payment-history", label: "Payment History", icon: FaMoneyBillWave, href: "/dashboard/admin/payment-history", },
         { key: "profile", label: "Profile", icon: FaUserCircle, href: "/dashboard/admin/profile" }
     ];
 
