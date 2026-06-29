@@ -266,6 +266,7 @@ npm run dev
 cd server
 npm install
 npm run dev
+npm
 ```
 
 ---
@@ -293,7 +294,7 @@ Email:
 Password:
 ```
 
----
+
 
 # 📈 Future Improvements
 
