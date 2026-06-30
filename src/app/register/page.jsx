@@ -39,7 +39,7 @@ export default function RegisterPage() {
                router.push('/')
             }
         } catch (err) {
-            
+            console.log(error);
             toast.error("Something went wrong.");
         }
     };

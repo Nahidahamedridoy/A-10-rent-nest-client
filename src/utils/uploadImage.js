@@ -5,7 +5,7 @@ export const uploadImage = async (imageFile) => {
     formData.append("image", imageFile);
 
     const response = await fetch(
-        `http://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`,
+        `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`,
         {
             method: "POST",
             body: formData,
@@ -17,5 +17,5 @@ export const uploadImage = async (imageFile) => {
         return data.data.url;
     }
 
-    toast.error("failed")
+    toast.error("failed");
 };
