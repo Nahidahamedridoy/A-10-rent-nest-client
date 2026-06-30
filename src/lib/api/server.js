@@ -28,6 +28,7 @@ export const deleteMutation = async (path) => {
 export const serverFetch = async (path) => {
 
     const token = await getTokenServer()
+    console.log(token);
 
     const res = await fetch(`${baseURL}${path}`, {
         cache: "no-store",

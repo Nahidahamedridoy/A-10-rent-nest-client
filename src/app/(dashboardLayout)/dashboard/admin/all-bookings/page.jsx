@@ -3,17 +3,29 @@
 import { baseURL } from "@/lib/api/baseUrl";
 import { Chip } from "@heroui/react";
 import { useEffect, useState } from "react";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 
 export default function AllBookingsPage() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const loadBookings = async () => {
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalBookings, setTotalBookings] = useState(0);
+
+  const loadBookings = async (currentPage = page) => {
+    setLoading(true);
+
     try {
-      const res = await fetch(`${baseURL}/api/admin/bookings`);
+      const res = await fetch(
+        `${baseURL}/api/admin/bookings?page=${currentPage}&limit=5`
+      );
+
       const data = await res.json();
 
-      setBookings(data);
+      setBookings(data.bookings);
+      setTotalBookings(data.totalBookings);
+      setTotalPages(data.totalPages);
     } catch (error) {
       console.log(error);
     } finally {
@@ -22,8 +34,8 @@ export default function AllBookingsPage() {
   };
 
   useEffect(() => {
-    loadBookings();
-  }, []);
+    loadBookings(page);
+  }, [page]);
 
   if (loading) {
     return (
@@ -41,7 +53,7 @@ export default function AllBookingsPage() {
         </h1>
 
         <p className="text-slate-400 mt-2">
-          Total Bookings : {bookings.length}
+          Total Bookings : {totalBookings}
         </p>
       </div>
 
@@ -75,7 +87,6 @@ export default function AllBookingsPage() {
                   key={booking._id}
                   className="border-b border-slate-800 hover:bg-slate-800/40 transition"
                 >
-                  {/* Tenant */}
                   <td className="px-6 py-4">
                     <div>
                       <h2 className="font-semibold text-white">
@@ -88,22 +99,18 @@ export default function AllBookingsPage() {
                     </div>
                   </td>
 
-                  {/* Property */}
                   <td className="px-6 py-4 text-white">
                     {booking.propertyTitle}
                   </td>
 
-                  {/* Owner */}
                   <td className="px-6 py-4 text-white">
-                    {booking.ownerName || "N/A"}
+                    {booking.ownerName}
                   </td>
 
-                  {/* Amount */}
                   <td className="px-6 py-4 text-center font-bold text-green-400">
                     ৳{booking.amount}
                   </td>
 
-                  {/* Booking Status */}
                   <td className="px-6 py-4 text-center">
                     <Chip
                       variant="flat"
@@ -119,7 +126,6 @@ export default function AllBookingsPage() {
                     </Chip>
                   </td>
 
-                  {/* Payment */}
                   <td className="px-6 py-4 text-center">
                     <Chip
                       variant="flat"
@@ -133,10 +139,11 @@ export default function AllBookingsPage() {
                     </Chip>
                   </td>
 
-                  {/* Date */}
                   <td className="px-6 py-4 text-center text-slate-300">
                     {booking.bookingDate
-                      ? new Date(booking.bookingDate).toLocaleDateString()
+                      ? new Date(
+                          booking.bookingDate
+                        ).toLocaleDateString()
                       : "--"}
                   </td>
                 </tr>
@@ -144,6 +151,51 @@ export default function AllBookingsPage() {
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* Pagination */}
+
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4 mt-8">
+
+        <p className="text-sm text-gray-500">
+          Page <span className="font-semibold">{page}</span> of{" "}
+          <span className="font-semibold">{totalPages}</span>
+        </p>
+
+        <div className="flex items-center gap-2">
+
+          <button
+            onClick={() => setPage((prev) => prev - 1)}
+            disabled={page === 1}
+            className="w-10 h-10 rounded-lg border border-gray-300 flex items-center justify-center hover:bg-sky-600 hover:text-white transition disabled:opacity-40"
+          >
+            <FaAngleLeft />
+          </button>
+
+          {[...Array(totalPages)].map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setPage(index + 1)}
+              className={`w-10 h-10 rounded-lg font-semibold transition ${
+                page === index + 1
+                  ? "bg-sky-600 text-white"
+                  : "border border-gray-300 hover:bg-sky-100"
+              }`}
+            >
+              {index + 1}
+            </button>
+          ))}
+
+          <button
+            onClick={() => setPage((prev) => prev + 1)}
+            disabled={page === totalPages}
+            className="w-10 h-10 rounded-lg border border-gray-300 flex items-center justify-center hover:bg-sky-600 hover:text-white transition disabled:opacity-40"
+          >
+            <FaAngleRight />
+          </button>
+
+        </div>
+
       </div>
     </div>
   );
