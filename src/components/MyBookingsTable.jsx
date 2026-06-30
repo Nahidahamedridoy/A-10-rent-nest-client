@@ -50,7 +50,7 @@ const MyBookingsTable = ({ bookings }) => {
                 </div>
               }
             >
-              {bookings.map((booking) => (
+              {bookings?.map((booking) => (
                 <TableRow key={booking._id}>
                   <TableCell>
                     {booking.propertyTitle ? (
