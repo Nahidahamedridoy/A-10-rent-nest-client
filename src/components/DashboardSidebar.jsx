@@ -50,12 +50,6 @@ const DashboardSidebar = () => {
       href: "/dashboard/owner/add-property",
     },
     {
-      key: "booking-requests",
-      label: "Booking Requests",
-      icon: FaClipboardList,
-      href: "/dashboard/owner/booking-requests",
-    },
-    {
       key: "profile",
       label: "Profile",
       icon: FaUserCircle,
