@@ -4,8 +4,7 @@ A full-stack Property Rental & Booking Platform where property owners can list r
 
 ## 🌐 Live Demo
 
-* **Frontend:** https://your-client-url.vercel.app
-* **Backend:** https://your-server-url.onrender.com
+* **Frontend:** https://a10-rent-nest.vercel.app
 
 ---
 
